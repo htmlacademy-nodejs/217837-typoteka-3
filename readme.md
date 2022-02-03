@@ -1,7 +1,7 @@
 # Личный проект «Типотека» [![Build status][travis-image]][travis-url]
 
-* Студент: [Алексей Бритвин](https://up.htmlacademy.ru/nodejs/3/user/217837).
-* Наставник: `Неизвестно`.
+- Студент: [Алексей Бритвин](https://up.htmlacademy.ru/nodejs/3/user/217837).
+- Наставник: [Сергей Вохмянин](https://github.com/delagen).
 
 ---
 
