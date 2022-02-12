@@ -76,7 +76,7 @@ module.exports = {
     const countPublications = Number.parseInt(count, 10) || DEFAULT_COUNT;
     if (countPublications > MAX_COUNT) {
       console.error(`Max number of publications to generate is ${MAX_COUNT}`);
-      process.exit(ExitCode.error);
+      process.exit(ExitCode.ERROR);
     }
     const content = JSON.stringify(generatePublications(countPublications));
     fs.writeFile(FILE_NAME, content, (err) => {
