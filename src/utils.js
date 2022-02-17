@@ -8,15 +8,20 @@ const getRandomInt = (min, max) => {
 };
 
 const shuffle = (someArray) => {
-  for (let i = someArray.length - 1; i > 0; i--) {
+  const arrCopy = [...someArray];
+  for (let i = arrCopy.length - 1; i > 0; i--) {
     const randomPosition = Math.floor(Math.random() * i);
-    [someArray[i], someArray[randomPosition]] = [
-      someArray[randomPosition],
-      someArray[i],
+    [arrCopy[i], arrCopy[randomPosition]] = [
+      arrCopy[randomPosition],
+      arrCopy[i],
     ];
   }
 
-  return someArray;
+  return arrCopy;
 };
 
-module.exports = {shuffle, getRandomInt};
+const getRandomItem = (arr) => {
+  return arr[getRandomInt(0, arr.length - 1)];
+};
+
+module.exports = {shuffle, getRandomInt, getRandomItem};

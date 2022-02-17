@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 const {getRandomInt, shuffle} = require(`../../utils`);
 const {ExitCode} = require(`../../constants`);
@@ -60,11 +60,13 @@ const CATEGORIES = [
 
 const generatePublications = (count) => {
   const date = new Date();
-  return Array(count).fill({}).map(() => ({
+  return Array.from({length: count}).map(() => ({
     title: TITLES[getRandomInt(0, TITLES.length - 1)],
-    announce: shuffle(SENTENCES).slice(1, 5).join(` `),
-    fullText: shuffle(SENTENCES).slice(1, getRandomInt(2, SENTENCES.length - 1)).join(` `),
-    category: [CATEGORIES[getRandomInt(0, CATEGORIES.length - 1)]],
+    announce: shuffle(SENTENCES).slice(0, 5).join(` `),
+    fullText: shuffle(SENTENCES)
+      .slice(0, getRandomInt(1, SENTENCES.length - 1))
+      .join(` `),
+    category: shuffle(CATEGORIES).slice(0, 3),
     createdDate: date.toISOString(),
   }));
 };
@@ -81,7 +83,8 @@ module.exports = {
     const content = JSON.stringify(generatePublications(countPublications));
     fs.writeFile(FILE_NAME, content, (err) => {
       if (err) {
-        return console.error(`Can't write data to file...`);
+        console.error(`Can't write data to file...`);
+        process.exit(ExitCode.ERROR);
       }
 
       return console.info(`Operation success. File created.`);
