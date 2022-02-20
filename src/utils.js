@@ -1,20 +1,33 @@
 "use strict";
 
-module.exports.getRandomInt = (min, max) => {
+const chalk = require(`chalk`);
+
+const getRandomInt = (min, max) => {
   min = Math.ceil(min);
   max = Math.floor(max);
 
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-module.exports.shuffle = (someArray) => {
-  for (let i = someArray.length - 1; i > 0; i--) {
+const shuffle = (someArray) => {
+  const arrCopy = [...someArray];
+  for (let i = arrCopy.length - 1; i > 0; i--) {
     const randomPosition = Math.floor(Math.random() * i);
-    [someArray[i], someArray[randomPosition]] = [
-      someArray[randomPosition],
-      someArray[i],
+    [arrCopy[i], arrCopy[randomPosition]] = [
+      arrCopy[randomPosition],
+      arrCopy[i],
     ];
   }
 
-  return someArray;
+  return arrCopy;
 };
+
+const getRandomItem = (arr) => {
+  return arr[getRandomInt(0, arr.length - 1)];
+};
+
+const successMessage = (message) => console.log(chalk.green(message));
+
+const errorMessage = (message) => console.error(chalk.red(message));
+
+module.exports = {shuffle, getRandomInt, getRandomItem, successMessage, errorMessage};
