@@ -1,0 +1,11 @@
+extends ../layout/layout_no-bg.pug
+
+block header
+  include ../layout/header_error.pug
+
+block content
+  main
+  h1.visually-hidden Ошибка 404
+  section.error
+    h2.error__title.title.title--big Похоже ошиблись адресом
+    a.error__link.text.text--big(href='main.html') Вернуться на главную
