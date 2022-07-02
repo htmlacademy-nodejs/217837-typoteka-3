@@ -1,4 +1,7 @@
-extends layout.pug
+extends ./layout/layout_no-bg.pug
+
+block header
+  include ./layout/header_admin.pug
 
 block content
   main.main-page.main-page--padding
