@@ -1,60 +1,31 @@
 'use strict';
 
-const http = require(`http`);
-const {successMessage, errorMessage} = require(`../../utils`);
+const express = require(`express`);
+const {successMessage} = require(`../../utils`);
 const {readFileContent} = require(`./read-file-content`);
 const {FILE_MOCKS_PATH, HttpCode} = require(`../../constants`);
 
 const DEFAULT_PORT = 3000;
 
-const sendResponse = (res, statusCode, message) => {
-  const template = `
-    <!Doctype html>
-      <html lang="ru">
-      <head>
-        <title>With love from Node</title>
-      </head>
-      <body>${message}</body>
-    </html>`.trim();
+const app = express();
+app.use(express.json());
 
-  res.writeHead(statusCode, {
-    'Content-Type': `text/html; charset=UTF-8`,
-  });
-
-  res.end(template);
-};
-
-const onClientConnect = async (req, res) => {
-  const notFoundMessageText = `Not found`;
-
-  switch (req.url) {
-    case `/`:
-      try {
-        const fileContent = await readFileContent(FILE_MOCKS_PATH);
-        const mocks = JSON.parse(fileContent);
-        const message = mocks.map((post) => `<li>${post.title}</li>`).join(``);
-        sendResponse(res, HttpCode.OK, `<ul>${message}</ul>`);
-      } catch (err) {
-        sendResponse(res, HttpCode.NOT_FOUND, notFoundMessageText);
-      }
-
-      break;
-    default:
-      sendResponse(res, HttpCode.NOT_FOUND, notFoundMessageText);
-      break;
+app.get(`/posts`, async (req, res) => {
+  const fileContent = await readFileContent(FILE_MOCKS_PATH);
+  res.status(HttpCode.OK);
+  if (fileContent.length) {
+    const mocks = JSON.parse(fileContent);
+    res.send(mocks);
+  } else {
+    res.send([]);
   }
-};
-
-const httpServer = http.createServer(onClientConnect);
+});
 
 module.exports = {
   name: `--server`,
   run(args) {
     const [customPort] = args;
     const port = Number.parseInt(customPort, 10) || DEFAULT_PORT;
-    httpServer
-      .listen(port)
-      .on(`listening`, () => successMessage(`Ожидаю соединений на ${port}`))
-      .on(`error`, ({message}) => errorMessage(`Ошибка при создании сервера: ${message}`));
+    app.listen(port, () => successMessage(`Ожидаю соединений на ${port}`));
   }
 };
